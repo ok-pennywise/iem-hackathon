@@ -44,8 +44,7 @@ def signin(
 @router.post("/logout", auth=JWTBearer())
 def logout(request: ASGIRequest) -> tuple[int, None]:
     try:
-        user: User = User.objects.get(id=request.auth["id"])
-        user.user_sessions.all().delete()
+        UserSession.objects.filter(uset_id=request.auth["id"]).delete()
     except User.DoesNotExist:
         return 404, None
 
