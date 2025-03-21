@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from django.conf import settings
+from django.contrib.auth.hashers import make_password
 from django.core.handlers.asgi import ASGIRequest
 import jwt
 from ninja import Router
@@ -54,4 +55,18 @@ def current_user(request: ASGIRequest) -> tuple[int, Optional[User]]:
     try:
         return 200, User.objects.get(id=request.auth["id"])
     except User.DoesNotExist:
+        return 401, None
+
+
+@router.put("/change-password", auth=JWTBearer())
+def change_password(
+    request: ASGIRequest, schema: schemas.PasswordChangeIn
+) -> tuple[int, None]:
+    try:
+        user: User = User.objects.get(id=request.auth["id"])
+        if not user.verify_password(schema.current_password):
+            return 403, None
+        user.password = make_password(schema.new_password)
+        user.save()
+    except (User.DoesNotExist, KeyError):
         return 401, None

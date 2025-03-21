@@ -18,3 +18,8 @@ class UserOut(ModelSchema):
 class LoginRequestIn(Schema):
     email: str
     password: str
+
+
+class PasswordChangeIn(Schema):
+    current_password: str
+    new_password: str
