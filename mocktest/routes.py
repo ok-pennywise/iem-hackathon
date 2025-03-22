@@ -5,8 +5,9 @@ from ninja import Router, UploadedFile, File
 import pdfplumber
 import requests
 from mocktest import schemas
+from security.authentication import JWTBearer
 
-router: Router = Router()
+router: Router = Router(auth=JWTBearer())
 
 
 @router.post("/upload")

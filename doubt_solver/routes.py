@@ -3,9 +3,11 @@ from ninja import Router
 import requests
 
 from doubt_solver import schemas
+from security.authentication import JWTBearer
 
 
-router: Router = Router()
+router: Router = Router(auth=JWTBearer())
+
 
 @router.post("/ask")
 def ask_doubt(request, schema: schemas.DoubtIn):
