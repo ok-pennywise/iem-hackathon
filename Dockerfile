@@ -22,7 +22,7 @@ EXPOSE 8000
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=config.settings
+    DJANGO_SETTINGS_MODULE=core.settings
 
 # Run migrations and start Uvicorn server
-CMD ["sh", "-c", "python manage.py migrate && uvicorn app.asgi:application --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "python manage.py migrate && uvicorn core.asgi:application --host 0.0.0.0 --port 8000"]
